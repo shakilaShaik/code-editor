@@ -1,6 +1,5 @@
-# backend/main.py
-
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import subprocess
 import uuid
@@ -8,12 +7,10 @@ import os
 
 app = FastAPI()
 
-
-
-
+# Enable CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Or ["*"] for dev
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,12 +24,10 @@ class CodeRequest(BaseModel):
 def run_code(req: CodeRequest):
     file_name = f"/tmp/{uuid.uuid4()}.py"
 
-    # Write user code to a temporary file
     with open(file_name, "w") as f:
         f.write(req.code)
 
     try:
-        # Execute the code with user input
         result = subprocess.run(
             ["python3", file_name],
             input=req.user_input.encode(),

@@ -11,21 +11,38 @@ function App() {
     setLoading(true);
     setOutput("");
     setError("");
+    console.log("⏳ Starting code execution...");
 
     try {
+      console.log("📤 Sending request to backend with payload:", {
+        code,
+        user_input: userInput,
+      });
+
       const res = await fetch("http://127.0.0.1:8000/run", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code, user_input: userInput }),
       });
 
+      console.log("📥 Received response:", res);
+
+      if (!res.ok) {
+        console.error(`❌ Backend responded with status: ${res.status}`);
+        throw new Error(`Server returned status ${res.status}`);
+      }
+
       const data = await res.json();
+      console.log("✅ Parsed response JSON:", data);
+
       setOutput(data.output);
       setError(data.error);
     } catch (err) {
-      setError("Failed to connect to backend.");
+      console.error("🔥 Error while running code:", err);
+      setError("Failed to connect to backend or invalid response.");
     } finally {
       setLoading(false);
+      console.log("🏁 Finished execution");
     }
   };
 
