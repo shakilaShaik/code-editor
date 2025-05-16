@@ -1,4 +1,5 @@
 import { useState } from "react";
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 function App() {
   const [code, setCode] = useState(`print("Hello, World!")`);
@@ -19,7 +20,7 @@ function App() {
         user_input: userInput,
       });
 
-      const res = await fetch("http://127.0.0.1:8000/run", {
+      const res = await fetch(`${BACKEND_URL}/run`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code, user_input: userInput }),

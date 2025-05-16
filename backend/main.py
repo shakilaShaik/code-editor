@@ -4,13 +4,15 @@ from pydantic import BaseModel
 import subprocess
 import uuid
 import os
+from dotenv import load_dotenv
 
 app = FastAPI()
+frontend_local = os.getenv("FRONTEND_URL")
 
 # Enable CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[frontend_local],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
