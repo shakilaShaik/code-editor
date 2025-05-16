@@ -5,6 +5,7 @@ import subprocess
 import uuid
 import os
 from dotenv import load_dotenv
+load_dotenv()
 
 app = FastAPI()
 frontend_local = os.getenv("FRONTEND_URL")
