@@ -8,6 +8,17 @@ import os
 
 app = FastAPI()
 
+
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Or ["*"] for dev
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 class CodeRequest(BaseModel):
     code: str
     user_input: str = ""
